@@ -1,0 +1,18 @@
+.words-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.guessed {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: palegreen;
+  height: 32px;
+  width: 32px;
+  margin: 16px;
+  border-radius: 5px;
+}
