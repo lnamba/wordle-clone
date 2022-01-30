@@ -13,6 +13,7 @@ function GameBoard () {
   });
   const [actual, setActual] = useState([]);
   const [word, setWord] = useState('');
+  const [currentWord, setCurrentWord] = useState(0);
 
   useEffect(() => {
     const init = async () => {
@@ -32,9 +33,33 @@ function GameBoard () {
     return data.words;
   })
 
+  const calculateCurrentWord = () => {
+    // update the currentWord from the obj
+    const wordToCheck = guesses[currentWord];
+    const index = wordToCheck.findIndex((l) => !l);
+
+    console.log({wordToCheck,index})
+    if (index === -1) {
+      // if no empty spots, assign to next word
+      setCurrentWord(currentWord + 1);
+    }
+  }
+
   const handlePickLetter = (letter) => {
-    console.log('PICKED!', letter)
+    console.log('PICKED!', letter, currentWord);
+    // get the current word from guesses obj, check for the first index with empty str
+    const wordToCheck = guesses[currentWord];
+    const index = wordToCheck.findIndex((l) => !l);
+    
+    // assign it to the letter guessed
+    wordToCheck[index] = letter;
+    const newGuesses = Object.assign({}, guesses);
+    newGuesses[currentWord] = wordToCheck
+
+    setGuesses(newGuesses);
+    calculateCurrentWord();
   }  
+
   
   return (
     <>

@@ -3,19 +3,18 @@ import './WordsSection.css'
 
 function WordsSection (props) {
   const { actual, guesses } = props;
-  console.log({actual, guesses})
+  console.log({ actual, guesses })
 
-  const renderLetter = (letter) => {
-    console.log({letter})
+  const renderLetter = (letter, i) => {
     return (
-      <div className='guessed'>{letter}</div>
+      <div key={i} className='guessed'>{letter}</div>
     )
   }
 
-  const mapWord = (guess) => {
-    console.log(guesses,guess)
+  const mapWord = (guess, i) => {
+    console.log({guess})
     return (
-      <div className="word-container">
+      <div key={i} className="word-container">
         {guess.map(renderLetter)}
       </div>
     )
