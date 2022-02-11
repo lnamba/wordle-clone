@@ -1,8 +1,8 @@
 import React from 'react';
-import './LetterSection.css'
+import './LetterSection.scss'
 
 function LetterTile (props) {
-  const { letter, pickLetter } = props;
+  const { letter, pickLetter, usedLettersMap } = props;
 
   const addLetter = () => {
     console.log('clicked', letter)
@@ -10,7 +10,7 @@ function LetterTile (props) {
   }
 
   return (
-    <div className="letter" onClick={addLetter}>
+    <div className={`letter ${usedLettersMap[letter]}`} onClick={addLetter}>
       <div>{letter}</div>
     </div>
   )

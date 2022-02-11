@@ -1,0 +1,44 @@
+.letter-section {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.letter-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.letter {
+  display: flex;
+  padding: 8px;
+  margin: 8px;
+  height: 32px;
+  width: 32px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  background-color: hotpink;
+  cursor: pointer;
+
+  &.incorrect {
+    background-color: rgb(78, 78, 78);
+  }
+
+  &.correct {
+    background-color: rgb(130, 189, 12);
+  }
+}
+
+button {
+  margin-bottom: 16px;
+  margin-left: 16px;
+  margin-right: 16px;
+  background-color: black;
+  color: white;
+  font-size: 1.5rem;
+}
