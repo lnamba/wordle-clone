@@ -1,43 +1,37 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import LettersSection from './LettersSection';
 import WordsSection from './WordsSection';
+import FinishModal from './FinishModal';
 
 const alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 
 function GameBoard () {
-  const [guesses, setGuesses] = useState({
+  const inital6x6Frame = {
     0: ['','','','',''],
     1: ['','','','',''],
     2: ['','','','',''],
     3: ['','','','',''],
     4: ['','','','',''],
     5: ['','','','',''],
-  });
-  const [tiles, setTiles] = useState({
-    0: ['','','','',''],
-    1: ['','','','',''],
-    2: ['','','','',''],
-    3: ['','','','',''],
-    4: ['','','','',''],
-    5: ['','','','',''],
-  });
+  }
+  const [guesses, setGuesses] = useState(inital6x6Frame);
+  const [tiles, setTiles] = useState(inital6x6Frame);
   const [actual, setActual] = useState([]);
-  const [word, setWord] = useState('');
   const [currentWord, setCurrentWord] = useState(0);
   const [usedLettersMap, setUsedLettersMap] = useState({});
+  const [isGuessCorrect, setIsGuessCorrect] = useState(false);
   const wordToCheck = guesses[currentWord];
   const index = wordToCheck.findIndex((l) => !l);
 
   useEffect(() => {
-    const init = async () => {
-      const returnedWords = await fetchFromJson()
-      const randomIndex = Math.floor(Math.random() * returnedWords.length);
-      setWord(returnedWords[randomIndex]);
-      setActual(returnedWords[randomIndex].split(''));
-    }
-   
     init();
   }, []);
+
+  const init = async () => {
+    const returnedWords = await fetchFromJson()
+    const randomIndex = Math.floor(Math.random() * returnedWords.length);
+    setActual(returnedWords[randomIndex].split(''));
+  }
 
   const fetchFromJson = useCallback(async () => {
     const url = 'words.json';
@@ -56,13 +50,16 @@ function GameBoard () {
   }, []);
 
   const calculateCurrentWord = () => {
-    // update the currentWord from the obj
-
     console.log({wordToCheck,index})
     if (index === -1) {
       // if no empty spots, assign to next word
       setCurrentWord(currentWord + 1);
     }
+  }
+
+  const checkIfCorrect = () => {
+    const isCorrect = wordToCheck.every((letter, i) => actual[i] === letter);
+    setIsGuessCorrect(isCorrect);
   }
 
   const handleGuess = () => {
@@ -84,12 +81,6 @@ function GameBoard () {
     newTiles[currentWord] = updatedTiles;
     setTiles(newTiles);
 
-    // const newLetterMap = Object.assign({}, usedLettersMap);
-    // wordToCheck.forEach((letter) => {
-    //   if (!newLetterMap[letter]) {
-    //     newLetterMap[letter] = true;
-    //   }
-    // });
     const letterMap = wordToCheck.reduce((result, letter, index) => {
       if (letter === actual[index]) {
         result[letter] = 'correct';
@@ -101,9 +92,9 @@ function GameBoard () {
       return result;
     }, {});
     const newLetterMap = {...usedLettersMap, ...letterMap};
-    console.log({letterMap, usedLettersMap, newLetterMap})
     setUsedLettersMap(newLetterMap);
     calculateCurrentWord();
+    checkIfCorrect();
   }
 
   const handlePickLetter = (letter) => {
@@ -121,21 +112,41 @@ function GameBoard () {
   }  
 
   const handleBackspace = () => {
+    console.log('handleBackspace', index)
     if (index > 0) {
       const newGuesses = Object.assign({}, guesses);
       newGuesses[currentWord] = wordToCheck
       wordToCheck[index - 1] = '';
 
       setGuesses(newGuesses);
+    } else {
+      console.log({currentWord})
+      const newGuesses = Object.assign({}, guesses);
+      newGuesses[currentWord] = wordToCheck
+      wordToCheck[wordToCheck.length - 1] = '';
+
+      setGuesses(newGuesses);
     }
   }
   console.log({actual})
+
+  const resetGame = () => {
+    setGuesses(inital6x6Frame);
+    setTiles(inital6x6Frame);
+    setActual([]);
+    setCurrentWord(0);
+    setUsedLettersMap({});
+    setIsGuessCorrect(false);
+    init();
+  }
 
   return (
     <>
       <WordsSection guesses={guesses} actual={actual} tiles={tiles} />
 
       <LettersSection pickLetter={handlePickLetter} usedLettersMap={usedLettersMap} onBackspace={handleBackspace} onClick={handleGuess} />
+   
+      {isGuessCorrect ? (<FinishModal reset={resetGame} />) : null}
     </>
   )
 }

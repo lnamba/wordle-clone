@@ -1,0 +1,57 @@
+.finish-modal {
+  background-color: black;
+  position: absolute;
+  top: 20%;
+  bottom: 0;
+  left: 30%;
+  right: 0;
+  height: 40vh;
+  width: 40vw;
+  border-radius: 10px;
+
+  animation-duration: 3s;
+  animation-name: grow;
+  animation-iteration-count: 1;
+}
+
+@keyframes grow {
+  from {
+    height: 0vh;
+    width: 0vw;
+    position: absolute;
+    top: 20%;
+    bottom: 0;
+    left: 50%;
+    right: 0;
+  }
+
+  to {
+    height: 40vh;
+    width: 40vw;
+  }
+}
+
+.text {
+  color: white;
+
+  animation-duration: 7s;
+  animation-name: appear;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-button {
+  background-color: white;
+  color: black;
+
+  animation-duration: 7s;
+  animation-name: appear;
+}
