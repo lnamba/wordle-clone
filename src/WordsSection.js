@@ -6,7 +6,7 @@ function WordsSection (props) {
 
   const renderLetter = (letter, i, letterTiles) => {
     return (
-      <span key={i} className={`guessed ${letter ? letterTiles : null}`}>{letter}</span>
+      <h3 key={i} className={`guessed ${letter ? letterTiles : null}`}>{letter}</h3>
     )
   }
 

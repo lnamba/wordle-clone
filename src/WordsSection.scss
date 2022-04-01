@@ -38,3 +38,9 @@
     background-color: rgb(224, 224, 2);
   }
 }
+
+@media screen and (max-width: 600px) {
+  .guessed {
+    margin: 4px;
+  }
+}

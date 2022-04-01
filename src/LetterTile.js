@@ -11,7 +11,7 @@ function LetterTile (props) {
 
   return (
     <div className={`letter ${usedLettersMap[letter]}`} onClick={addLetter}>
-      <div>{letter}</div>
+      <h3>{letter}</h3>
     </div>
   )
 }

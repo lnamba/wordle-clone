@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import LettersSection from './LettersSection';
 import WordsSection from './WordsSection';
 import FinishModal from './FinishModal';
+import ButtonsSection from './ButtonsSection'
 
 const alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 
@@ -64,6 +65,10 @@ function GameBoard () {
 
   const handleGuess = () => {
     console.log('handleGuess', {actual, guesses,wordToCheck})
+    if (wordToCheck.some((letter) => !letter)) {
+      window.alert('Word too short')
+      return;
+    }
     
     const updatedTiles = wordToCheck.reduce((arr, letter, index) => {
       if (letter === actual[index]) {
@@ -144,8 +149,10 @@ function GameBoard () {
     <>
       <WordsSection guesses={guesses} actual={actual} tiles={tiles} />
 
-      <LettersSection pickLetter={handlePickLetter} usedLettersMap={usedLettersMap} onBackspace={handleBackspace} onClick={handleGuess} />
+      <LettersSection pickLetter={handlePickLetter} usedLettersMap={usedLettersMap} />
    
+      <ButtonsSection onGuess={handleGuess} onBackspace={handleBackspace} />
+    
       {isGuessCorrect ? (<FinishModal reset={resetGame} />) : null}
     </>
   )

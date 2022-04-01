@@ -5,14 +5,6 @@
   justify-content: center;
 }
 
-.letter-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
 .letter {
   display: flex;
   padding: 8px;
@@ -32,6 +24,30 @@
   &.correct {
     background-color: rgb(130, 189, 12);
   }
+}
+
+@media screen and (min-width: 900px) {
+  .letter-section {
+    padding: 0 250px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .letter-section {
+    padding: 0 0px;
+  }
+
+  .letter {
+    margin: 4px;
+  }
+}
+
+.letter-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 button {
