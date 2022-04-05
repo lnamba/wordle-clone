@@ -23,6 +23,7 @@ function GameBoard () {
   const [isGuessCorrect, setIsGuessCorrect] = useState(false);
   const wordToCheck = guesses[currentWord];
   const index = wordToCheck.findIndex((l) => !l);
+  const stringifiedGuess = wordToCheck.join('');
 
   useEffect(() => {
     init();
@@ -63,9 +64,34 @@ function GameBoard () {
     setIsGuessCorrect(isCorrect);
   }
 
-  const handleGuess = () => {
-    console.log('handleGuess', {actual, guesses,wordToCheck})
-    if (wordToCheck.some((letter) => !letter)) {
+  const isWordValid = async () => {
+    const validWordUrl = `https://od-api.oxforddictionaries.com/api/v2/entries/en-us/${stringifiedGuess.toLowerCase()}?strictMatch=false`;
+    const res = await fetch(validWordUrl, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        app_id: 'd9a0cf07',
+        app_key: '97efd8ec12412b7974dab2f70ee8c0f1',
+      }
+    })
+    console.log({res})
+    if (res.status === 404) {
+      return false;
+    }
+    return true;
+  }
+
+  const handleGuess = async () => {
+    const isValid = await isWordValid()
+    console.log('handleGuess', {isValid,actual, guesses,wordToCheck})
+
+    if (!isValid) {
+      window.alert('Invalid word')
+      return;
+    } 
+    
+    if (stringifiedGuess.length < 5) {
       window.alert('Word too short')
       return;
     }
