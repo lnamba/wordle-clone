@@ -123,6 +123,7 @@ function GameBoard () {
       return result;
     }, {});
     const newLetterMap = {...usedLettersMap, ...letterMap};
+    console.log({newLetterMap})
     setUsedLettersMap(newLetterMap);
     calculateCurrentWord();
     checkIfCorrect();

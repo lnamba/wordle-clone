@@ -1,40 +1,62 @@
 .finish-modal {
-  background-color: black;
-  position: absolute;
+  position: fixed;
   top: 20%;
   bottom: 0;
-  left: 30%;
-  right: 0;
-  height: 40vh;
-  width: 40vw;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 20vh;
+  width: 20vw;
   border-radius: 10px;
 
-  animation-duration: 3s;
-  animation-name: grow;
-  animation-iteration-count: 1;
+  animation: grow 4s, appear 1s;
+  background: radial-gradient(
+    circle,
+    rgb(230, 114, 191) 0%,
+    rgb(245, 213, 231) 100%
+  );
+  box-shadow: 10px 10px #888888;
 }
 
 @keyframes grow {
   from {
-    height: 0vh;
-    width: 0vw;
-    position: absolute;
-    top: 20%;
-    bottom: 0;
-    left: 50%;
-    right: 0;
+    box-shadow: none;
   }
 
   to {
-    height: 40vh;
-    width: 40vw;
+    box-shadow: 10px 10px #888888;
   }
 }
 
-.text {
+@media screen and (max-width: 900px) {
+  .finish-modal {
+    width: 30vw;
+    top: 20%;
+    bottom: 0;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .finish-modal {
+    width: 50vw;
+    top: 20%;
+    bottom: 0;
+  }
+}
+
+.modal-button {
+  border-radius: 50px;
+  border: none;
+  padding: 8px;
+  color: white;
+  font-size: 20px;
+  padding: 12px;
+  cursor: pointer;
+}
+
+.title {
   color: white;
 
-  animation-duration: 7s;
+  animation-duration: 5s;
   animation-name: appear;
 }
 
