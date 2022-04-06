@@ -65,7 +65,7 @@ function GameBoard () {
   }
 
   const isWordValid = async () => {
-    const validWordUrl = `https://od-api.oxforddictionaries.com/api/v2/entries/en-us/${stringifiedGuess.toLowerCase()}?strictMatch=false`;
+    const validWordUrl = `https://api.dictionaryapi.dev/api/v2/entries/en/${stringifiedGuess.toLowerCase()}`;
     const res = await fetch(validWordUrl, {
       method: 'GET',
       headers: {
