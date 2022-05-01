@@ -1,7 +1,8 @@
-import './ButtonsSection.scss'
+import '../styles/ButtonsSection.scss';
 
 function ButtonsSection(props) {
   const { onGuess, onBackspace } = props;
+  
   return (
     <div id="button-section">
       <button className="button" onClick={onGuess}>

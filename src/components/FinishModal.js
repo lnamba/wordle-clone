@@ -1,13 +1,13 @@
 import React from 'react';
 
-import './Modal.scss'
+import '../styles/Modal.scss';
 
 function FinishModal(props) {
-  const { reset } = props;
+  const { reset, result } = props;
 
   return (
     <div className="finish-modal">
-      <h1 className="title">Success</h1>
+      <h1 className="title">{result === 'won' ? 'Success' : 'Good try'}</h1>
 
       <div className="button-container">
         <button className="modal-button" onClick={reset}>Play again</button>

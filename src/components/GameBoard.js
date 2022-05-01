@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import LettersSection from './LettersSection';
 import WordsSection from './WordsSection';
 import FinishModal from './FinishModal';
-import ButtonsSection from './ButtonsSection'
+import ButtonsSection from './ButtonsSection';
 
 const alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 
@@ -21,16 +21,17 @@ function GameBoard () {
   const [currentWord, setCurrentWord] = useState(0);
   const [usedLettersMap, setUsedLettersMap] = useState({});
   const [isGuessCorrect, setIsGuessCorrect] = useState(false);
-  const wordToCheck = guesses[currentWord];
-  const index = wordToCheck.findIndex((l) => !l);
+  const [isGameOver, setIsGameOver] = useState(false);
+  const wordToCheck = guesses[currentWord] || inital6x6Frame[0];
+  const index = wordToCheck?.findIndex((l) => !l);
   const stringifiedGuess = wordToCheck.join('');
 
   useEffect(() => {
-    init();
+    initializeGame();
   }, []);
 
-  const init = async () => {
-    const returnedWords = await fetchFromJson()
+  const initializeGame = async () => {
+    const returnedWords = await fetchFromJson();
     const randomIndex = Math.floor(Math.random() * returnedWords.length);
     setActual(returnedWords[randomIndex].split(''));
   }
@@ -52,7 +53,6 @@ function GameBoard () {
   }, []);
 
   const calculateCurrentWord = () => {
-    console.log({wordToCheck,index})
     if (index === -1) {
       // if no empty spots, assign to next word
       setCurrentWord(currentWord + 1);
@@ -64,6 +64,11 @@ function GameBoard () {
     setIsGuessCorrect(isCorrect);
   }
 
+  const checkIfGameOver = () => {
+    const isGameOver = Object.values(guesses).every((word) => word.every((letter) => letter));
+    setIsGameOver(isGameOver);
+  }
+
   const isWordValid = async () => {
     const validWordUrl = `https://api.dictionaryapi.dev/api/v2/entries/en/${stringifiedGuess.toLowerCase()}`;
     const res = await fetch(validWordUrl, {
@@ -73,9 +78,8 @@ function GameBoard () {
         Accept: 'application/json',
         app_id: 'd9a0cf07',
         app_key: '97efd8ec12412b7974dab2f70ee8c0f1',
-      }
-    })
-    console.log({res})
+      },
+    });
     if (res.status === 404) {
       return false;
     }
@@ -83,16 +87,15 @@ function GameBoard () {
   }
 
   const handleGuess = async () => {
-    const isValid = await isWordValid()
-    console.log('handleGuess', {isValid,actual, guesses,wordToCheck})
+    const isValid = await isWordValid();
 
     if (!isValid) {
-      window.alert('Invalid word')
+      window.alert('Invalid word');
       return;
     } 
     
     if (stringifiedGuess.length < 5) {
-      window.alert('Word too short')
+      window.alert('Word too short');
       return;
     }
     
@@ -107,7 +110,6 @@ function GameBoard () {
       return arr;
     }, []);
 
-    console.log(updatedTiles, currentWord)
     const newTiles = Object.assign({}, tiles);
     newTiles[currentWord] = updatedTiles;
     setTiles(newTiles);
@@ -122,16 +124,16 @@ function GameBoard () {
       }
       return result;
     }, {});
-    const newLetterMap = {...usedLettersMap, ...letterMap};
-    console.log({newLetterMap})
+    const newLetterMap = { ...usedLettersMap, ...letterMap };
+
     setUsedLettersMap(newLetterMap);
     calculateCurrentWord();
     checkIfCorrect();
+    checkIfGameOver();
   }
 
   const handlePickLetter = (letter) => {
-    console.log('PICKED!', letter, currentWord);
-    // get the current word from guesses obj, check for the first index with empty str
+    // get the current word from guesses obj, check for the first index with empty string
     // assign it to the letter guessed
       wordToCheck[index] = letter;
       const newGuesses = Object.assign({}, guesses);
@@ -144,7 +146,6 @@ function GameBoard () {
   }  
 
   const handleBackspace = () => {
-    console.log('handleBackspace', index)
     if (index > 0) {
       const newGuesses = Object.assign({}, guesses);
       newGuesses[currentWord] = wordToCheck
@@ -152,7 +153,6 @@ function GameBoard () {
 
       setGuesses(newGuesses);
     } else {
-      console.log({currentWord})
       const newGuesses = Object.assign({}, guesses);
       newGuesses[currentWord] = wordToCheck
       wordToCheck[wordToCheck.length - 1] = '';
@@ -160,7 +160,6 @@ function GameBoard () {
       setGuesses(newGuesses);
     }
   }
-  console.log({actual})
 
   const resetGame = () => {
     setGuesses(inital6x6Frame);
@@ -169,7 +168,8 @@ function GameBoard () {
     setCurrentWord(0);
     setUsedLettersMap({});
     setIsGuessCorrect(false);
-    init();
+    setIsGameOver(false);
+    initializeGame();
   }
 
   return (
@@ -180,7 +180,8 @@ function GameBoard () {
    
       <ButtonsSection onGuess={handleGuess} onBackspace={handleBackspace} />
     
-      {isGuessCorrect ? (<FinishModal reset={resetGame} />) : null}
+      {isGuessCorrect ? (<FinishModal reset={resetGame} result="won" />) : null}
+      {isGameOver && !isGuessCorrect ? (<FinishModal reset={resetGame} result="lost" />) : null}
     </>
   )
 }

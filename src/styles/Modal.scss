@@ -6,15 +6,11 @@
   transform: translateX(-50%);
   height: 20vh;
   width: 20vw;
-  border-radius: 10px;
+  border-radius: 5px;
 
   animation: grow 4s, appear 1s;
-  background: radial-gradient(
-    circle,
-    rgb(230, 114, 191) 0%,
-    rgb(245, 213, 231) 100%
-  );
-  box-shadow: 10px 10px #888888;
+  background: black;
+  box-shadow: 5px 5px #888888;
 }
 
 @keyframes grow {
@@ -23,7 +19,7 @@
   }
 
   to {
-    box-shadow: 10px 10px #888888;
+    box-shadow: 5px 5px #888888;
   }
 }
 

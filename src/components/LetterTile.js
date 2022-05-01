@@ -1,11 +1,10 @@
 import React from 'react';
-import './LetterSection.scss'
+import '../styles/LetterSection.scss';
 
 function LetterTile (props) {
   const { letter, pickLetter, usedLettersMap } = props;
 
   const addLetter = () => {
-    console.log('clicked', letter)
     pickLetter(letter)
   }
 

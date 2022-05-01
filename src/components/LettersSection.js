@@ -1,7 +1,7 @@
 import React from 'react';
-import LetterTile from './LetterTile'
+import LetterTile from './LetterTile';
 
-const alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+const ALPHABET = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 
 function LettersSection(props) {
   const { pickLetter, usedLettersMap } = props;
@@ -15,7 +15,7 @@ function LettersSection(props) {
   return (
     <div className="letter-section">
       <div className="letter-container">
-        {alphabet.map(renderLetter)}
+        {ALPHABET.map(renderLetter)}
       </div>
     </div>
   )

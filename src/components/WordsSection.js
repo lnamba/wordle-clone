@@ -1,8 +1,8 @@
 import React from 'react';
-import './WordsSection.scss'
+import '../styles/WordsSection.scss';
 
 function WordsSection (props) {
-  const { actual, guesses, tiles } = props;
+  const { guesses, tiles } = props;
 
   const renderLetter = (letter, i, letterTiles) => {
     return (
